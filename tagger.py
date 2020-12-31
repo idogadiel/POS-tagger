@@ -36,9 +36,8 @@ def who_am_i(): #this is not a class method
     """Returns a ductionary with your name, id number and email. keys=['name', 'id','email']
         Make sure you return your own info!
     """
-    #TODO edit the dictionary to have your own details
-    # if work is submitted by a pair of students, add the following keys: name2, id2, email2
-    return {'name1': 'ido gadiel', 'id1': '200736494', 'email1': 'gadiele@post.bgu.ac.il'}
+    return {'name1': 'ido gadiel', 'id1': '200736494', 'email1': 'gadiele@post.bgu.ac.il',
+            'name2': 'niv', 'id2': '_', 'email2': '_@post.bgu.ac.il'}
 
 
 def read_annotated_sentence(f):
@@ -247,11 +246,13 @@ def viterbi(sentence, A, B):
                 prev_tag = previous_node[0]
                 prev_prob = previous_node[2]
                 transition_prob = A[prev_tag].get(current_tag, None)
-                emission_prob = B[current_tag].get(word, None)
+                emission_prob = 0
+                if word in all_words:
+                    emission_prob = B[current_tag].get(word, None)
                 if transition_prob is not None and emission_prob is not None:
                     current_prob = prev_prob + transition_prob + emission_prob
                     if max_node is None or current_prob > max_node[2]:
-                        max_node = (current_tag, previous_node, current_prob, word)
+                        max_node = (current_tag, previous_node, current_prob)
 
             if max_node is not None:
                 new_column.append(max_node)
