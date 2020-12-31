@@ -169,7 +169,7 @@ def baseline_tag_sentence(sentence, perWordTagCounts, allTagCounts):
     tagged_sentence = []
     for word in sentence:
         if word in perWordTagCounts.keys():
-            tag = perWordTagCounts[word].most_common(1)[0]
+            tag = perWordTagCounts[word].most_common(1)[0][0]
             tagged_sentence.append((word, tag))
         else:
             sampled_tag = random.choice(list(allTagCounts.elements()))
@@ -195,11 +195,10 @@ def hmm_tag_sentence(sentence, A, B):
     Return:
         list: list of pairs
     """
-
     dummy_tags = ['START', 'END']
-
     tags = []
     current_node = viterbi(sentence, A, B)
+
     while current_node is not None:
         tags.append(current_node[0])
         current_node = current_node[1]
@@ -237,7 +236,6 @@ def viterbi(sentence, A, B):
     init_column = [('START', None, 0)]
     latest_column = init_column
 
-    # start another version:
     for word in sentence:
         new_column = []
         for current_tag in all_tags:
